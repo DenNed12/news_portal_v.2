@@ -1,0 +1,39 @@
+python manage.py shell
+from articles.models import *
+u1 = User.objects.create_user(username = 'Denis')
+u2 = User.objects.create_user(username = 'Artem')
+Author.objects.create(autorUser = u1)
+Author.objects.create(autorUser = u2)
+Category.objects.create(name = 'History')
+Category.objects.create(name = 'News')
+Category.objects.create(name = 'Politics')
+Category.objects.create(name = 'Science')
+a = Author.objects.get(id=1)
+Post.objects.create(title = 'sometitle',postAuthor = a,text = 'sss',categoryType = 'NW')
+Post.objects.create(title = 'sometitle',postAuthor = a,text = 'sss',categoryType = 'AR')
+Post.objects.create(title = 'sometitle',postAuthor = a,text = 'sss',categoryType = 'AR')
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=2))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=3))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=4))
+Comment.objects.create(postComment = Post.objects.get(id=1),userComment = User.objects.get(id=1),text = 'ttt')
+Comment.objects.create(postComment = Post.objects.get(id=2),userComment = User.objects.get(id=1),text = 'ttt')
+Comment.objects.create(postComment = Post.objects.get(id=2),userComment = User.objects.get(id=2),text = 'ttt')
+Comment.objects.get(id =1).like()
+Comment.objects.get(id =1).like()
+Comment.objects.get(id =2).like()
+Comment.objects.get(id =2).dislike()
+Comment.objects.get(id =1).dislike()
+Comment.objects.get(id =2).like()
+Comment.objects.get(id=1).rating
+Comment.objects.get(id=2).rating
+Author.objects.get(id=1).rating
+Author.objects.get(id=1).update_rating()
+Author.objects.get(id=2).update_rating()
+p = Post.objects.order_by('-rating')[:1]
+for i in p:
+    i.postAuthor.autorUser.username
+    i.rating
+    i.title
+    i.dateTime
+Post.objects.order_by('-rating').first().comment_set.all()
