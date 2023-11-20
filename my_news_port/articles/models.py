@@ -50,6 +50,9 @@ class Post(models.Model):
         return f'{self.title}...' \
                f'{self.text[:123]}'
 
+    def __str__(self):
+        return f'{self.title}: {self.text[:20]}'
+
 class PostCategory(models.Model):
     postTrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryTrough = models.ForeignKey(Category, on_delete = models.CASCADE)
