@@ -1,0 +1,44 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% load custom_filters %}
+
+{% block content %}
+   <h1>Все новости</h1>
+   <hr>
+   {% if news %}
+       <table> <!-- Начинаем описывать таблицу -->
+           <tr> <!-- Добавляем строку -->
+               <td> <!-- Добавляем ячейку в строку -->
+                   Название
+               </td>
+               <td> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+                   Описание
+               </td>
+               <td>
+                   Категория
+               </td>
+               <td>
+                   Рейтинг
+               </td>
+                <td>
+                   Текст
+               </td>
+           </tr> <!-- Не забываем закрыть HTML-тег строки -->
+           {% for news_post in news %}
+           <tr>
+               <td>{{ news_post.title|censor}}</td>
+               <td>{{ news_post.postAuthor }}</td>
+               <td>{{ news_post.category.name }}</td>
+               <td>{{ news_post.rating }}</td>
+               <td>{{ news_post.text|truncatechars:20}}</td>
+           </tr>
+           {% endfor %}
+       </table> <!-- ... и таблицы -->
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+{% endblock content %}
