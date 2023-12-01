@@ -38,6 +38,10 @@ class Post(models.Model):
         (ARTICLE, 'статья')]
     categoryType = models.CharField(max_length=2,choices = CAT_CHOICES,default = ARTICLE)
 
+    # added_at = models.DateTimeField(
+    #     auto_now=True,
+    # )
+
     def like(self):
         self.rating += 1
         self.save()

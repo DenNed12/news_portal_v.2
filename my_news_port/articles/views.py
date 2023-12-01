@@ -10,6 +10,7 @@ class NewsList(ListView):
     ordering = 'title'
     template_name = 'news.html'
     context_object_name = 'news'
+    paginate_by = 3
 
 
 class NewsDetail(DetailView):

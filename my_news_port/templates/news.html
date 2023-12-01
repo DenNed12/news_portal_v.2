@@ -5,17 +5,16 @@ News
 {% endblock title %}
 
 {% load custom_filters %}
-
 {% block content %}
    <h1>Все новости</h1>
    <hr>
    {% if news %}
-       <table> <!-- Начинаем описывать таблицу -->
-           <tr> <!-- Добавляем строку -->
-               <td> <!-- Добавляем ячейку в строку -->
+       <table>
+           <tr>
+               <td>
                    Название
                </td>
-               <td> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+               <td>
                    Описание
                </td>
                <td>
@@ -27,7 +26,7 @@ News
                 <td>
                    Текст
                </td>
-           </tr> <!-- Не забываем закрыть HTML-тег строки -->
+           </tr>
            {% for news_post in news %}
            <tr>
                <td>{{ news_post.title|censor}}</td>
@@ -36,9 +35,32 @@ News
                <td>{{ news_post.rating }}</td>
                <td>{{ news_post.text|truncatechars:20}}</td>
            </tr>
+
            {% endfor %}
-       </table> <!-- ... и таблицы -->
+       </table>
    {% else %}
        <h2>Новостей нет!</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
    {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+
 {% endblock content %}
