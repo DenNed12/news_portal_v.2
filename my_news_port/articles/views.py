@@ -1,11 +1,11 @@
 from django.shortcuts import render, HttpResponseRedirect
-
-# Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from .models import Post
 from .filters import NewsFilter
 from .forms import PostForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 
@@ -41,18 +41,21 @@ class NewsSearch(ListView):
 
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('articles.add_post',)
     form_class = PostForm
     model = Post
-    template_name = 'news_edit.htm'
+    template_name = 'news_edit.html'
 
-class NewstUpdate(UpdateView):
+class NewstUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('articles.create_post')
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('articles.delete_post',)
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news_list')

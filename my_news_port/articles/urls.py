@@ -7,6 +7,5 @@ urlpatterns = [
    path('create/', NewsCreate.as_view(), name = 'news_create'),
    path('<int:pk>/update/', NewstUpdate.as_view(), name ='news_update'),
    path('<int:pk>/delete/', NewsDelete.as_view(), name ='news_delete')
-   # path('<int:pk>/edit/'),
-   # path('<int:pk>/delete/')
+
 ]
