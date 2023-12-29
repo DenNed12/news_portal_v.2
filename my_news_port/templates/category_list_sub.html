@@ -6,6 +6,9 @@ News
 
 {% load custom_filters %}
 {% block content %}
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a> </p>
+`   {% endif %}
 
    <hr>
 
@@ -16,9 +19,6 @@ News
            <tr>
                <td>
                    Название
-               </td>
-               <td>
-                   Описание
                </td>
                <td>
                    Категория
@@ -33,10 +33,9 @@ News
            {% for news_post in category_news_list %}
            <tr>
                <td>{{ news_post.title|censor}}</td>
-               <td>{{ news_post.postAuthor }}</td>
-               <td>{%for postCategory in news_post.postCategory.all  %}
-                    <a href=" {% url category_list category.id %}" ></a>
-                   {%endfor%}
+               <td>{% for postCategory in news_post.postCategory.all  %}
+                    <a href=" {% url 'category_list' postCategory.id %}" > {{postCategory}}</a>
+                     {% endfor %}
                </td>
                <td>{{ news_post.rating }}</td>
                <td>{{ news_post.text|truncatechars:20}}</td>

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'django.contrib.sites',
-    'articles',
+    'articles.apps.ArticlesConfig',
     'django_filters',
     'allauth',
     'allauth.account',
@@ -161,3 +161,4 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
+SITE_URL = 'http://127.0.0.1:8000'
