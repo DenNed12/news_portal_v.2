@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.yandex'
+    'allauth.socialaccount.providers.yandex',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [
@@ -152,7 +153,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 #email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "deonissl@yandex.ru"
@@ -162,3 +163,6 @@ EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
 SITE_URL = 'http://127.0.0.1:8000'
+
+APSCEDULER_DATETIME_FORMAT = 'N J, Y, f:s a'
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
