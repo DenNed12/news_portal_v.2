@@ -21,7 +21,7 @@ def my_job():
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(added_at__gte = last_week)
     categories = set(posts.values_list('postCategory__name', flat= True ))
-    subscribers = set(Category.objects.filter(name__in =categories).values_list('subscribers__email'))
+    subscribers = set(Category.objects.filter(name__in =categories).values_list('subscribers_email'))
     print(subscribers)
 
     html_content = render_to_string(
