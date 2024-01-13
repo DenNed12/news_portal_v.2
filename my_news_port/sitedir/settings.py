@@ -154,21 +154,21 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 #email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "deonissl@yandex.ru"
-EMAIL_HOST_PASSWORD = "pvjqbanfbgqdafdi"
+EMAIL_HOST = ''
+EMAIL_PORT = 400
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
-SITE_URL = 'http://127.0.0.1:8000'
+DEFAULT_FROM_EMAIL = ""
+SITE_URL = ''
 
 APSCEDULER_DATETIME_FORMAT = 'N J, Y, f:s a'
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = ''
+CELERY_RESULT_BACKEND = ''
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
