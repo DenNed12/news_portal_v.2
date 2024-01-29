@@ -30,19 +30,22 @@ News
                    Текст
                </td>
            </tr>
-           {% for news_post in news %}
-           <tr>
-               <td>{{ news_post.title|censor}}</td>
-               <td>{{ news_post.postAuthor }}</td>
-               <td>{% for cat in news_post.postCategory.all %}
-                    {{ cat.name }}
-                    {% endfor %}
-               </td>
-               <td>{{ news_post.rating }}</td>
-               <td>{{ news_post.text|truncatechars:20}}</td>
-           </tr>
+           {% load cache %}
+           {% cache 60 content %}
+               {% for news_post in news %}
+               <tr>
+                   <td>{{ news_post.title|censor}}</td>
+                   <td>{{ news_post.postAuthor }}</td>
+                   <td>{% for cat in news_post.postCategory.all %}
+                        {{ cat.name }}
+                        {% endfor %}
+                   </td>
+                   <td>{{ news_post.rating }}</td>
+                   <td>{{ news_post.text|truncatechars:20}}</td>
+               </tr>
 
-           {% endfor %}
+               {% endfor %}
+           {% endcache %}
        </table>
    {% else %}
        <h2>Новостей нет!</h2>

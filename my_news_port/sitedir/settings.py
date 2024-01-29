@@ -9,12 +9,22 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
+from os import path
 from pathlib import Path
+from dotenv import load_dotenv
+import logging
+import os
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+SITE_URL = 'http://127.0.0.1:8000'
 
+DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
+
+logger = logging.getLogger('django')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -84,6 +94,7 @@ WSGI_APPLICATION = 'sitedir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -153,16 +164,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 #email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "deonissl@yandex.ru"
-EMAIL_HOST_PASSWORD = "pvjqbanfbgqdafdi"
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
-SITE_URL = 'http://127.0.0.1:8000'
 
 APSCEDULER_DATETIME_FORMAT = 'N J, Y, f:s a'
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
@@ -172,3 +174,94 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files')
+    }}
+
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'myformatter'
+        },
+        'handle_info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'myformatter1'
+        },
+        'handle_warnings': {
+            'level':'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'myformatter'},
+
+        'handle_erorrs': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter':'myformatter1'},
+
+        'handle_erorrs_mail': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'myformatter1'},
+
+
+        'handle_sequrity': {
+            'level': 'CRITICAL',
+            'class': 'logging.FileHandler',
+            'filename': 'sequrity.log',
+            'formatter': 'myformatter1'}
+
+    },
+
+
+
+    'formatters': {
+        'myformatter':{
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%Y.%m.%d',
+            'style': '{',
+
+
+        },
+        'myformatter1': {
+            'format': '{asctime} {levelname} {pathname} {module} {message}',
+            'datetime': '%Y.%m.%d H%:M%:S%',
+            'style': '{'
+        }
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console','handle_info','handle_warnings','handle_erorrs'],
+        },
+        'django.request': {
+            'handlers': ['handle_erorrs','handle_erorrs_mail']
+        },
+        'django.server': {
+            'handlers': ['handle_erorrs']
+        },
+        'django.template': {
+            'handlers': ['handle_erorrs']},
+
+        'djnago.sequrity': {
+            'handlers': ['handle_sequrity']
+        }
+
+    }
+
+}
+
+
+

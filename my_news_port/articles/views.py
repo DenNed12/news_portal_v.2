@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Exists, OuterRef
 
@@ -22,7 +23,12 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'news_post.html'
     context_object_name = 'news_post'
-
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'news - {self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'product-{self.kwargs["pk"]}', obj)
+            return obj
 
 class NewsSearch(ListView):
     model = Post
@@ -93,32 +99,16 @@ def subscribe(request, pk):
 
 
 
-# @login_required
-# @csrf_protect
-# def subscriptions(request):
-#     if request.method == 'POST':
-#         category_id = request.POST.get('category_id')
-#         category = Category.objects.get(id=category_id)
-#         action = request.POST.get('action')
-#
-#         if action == 'subscribe':
-#             Subscription.objects.create(user=request.user, category=category)
-#         elif action == 'unsubscribe':
-#             Subscription.objects.filter(
-#                 user=request.user,
-#                 category=category,
-#             ).delete()
-#
-#     categories_with_subscriptions = Category.objects.annotate(
-#         user_subscribed=Exists(
-#             Subscription.objects.filter(
-#                 user=request.user,
-#                 category=OuterRef('pk'),
-#             )
-#         )
-#     ).order_by('name')
-#     return render(
-#         request,
-#         'subscriptions.html',
-#         {'categories': categories_with_subscriptions},
-#     )
+def index(request):
+    try:
+        posts = Post.objects.all()
+        my_file = open('some.txt','a')
+        my_file.write('Info {} done!\n'.format(posts))
+        my_file.close()
+
+    except:
+        my_file = open('some.txt','a')
+        my_file.write('Error {} failed\n'.format('new'))
+        my_file.close()
+    news = Post.objects.all()
+    return render(request, 'index.html', context={'news':news})
