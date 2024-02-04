@@ -190,73 +190,108 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'myformatter'
+            'formatter': 'myformatter',
+            'filters': ['require_debug_true']
         },
         'handle_info': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'general.log',
-            'formatter': 'myformatter1'
+            'formatter': 'myformatter1',
+            'filters': ['require_debug_false']
         },
         'handle_warnings': {
             'level':'WARNING',
             'class': 'logging.StreamHandler',
-            'formatter': 'myformatter'},
+            'formatter': 'myformatter3'},
 
         'handle_erorrs': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'errors.log',
-            'formatter':'myformatter1'},
+            'formatter':'myformatter1',
+            'filters': ['require_debug_false']},
 
         'handle_erorrs_mail': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'myformatter1'},
-
-
+            'formatter': 'myformatter3',
+            'filters': ['require_debug_false'],
+            'include_html': True,
+        },
         'handle_sequrity': {
-            'level': 'CRITICAL',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': 'sequrity.log',
             'formatter': 'myformatter1'}
-
     },
-
-
 
     'formatters': {
         'myformatter':{
             'format': '{asctime} {levelname} {message}',
             'datetime': '%Y.%m.%d',
             'style': '{',
-
-
         },
         'myformatter1': {
-            'format': '{asctime} {levelname} {pathname} {module} {message}',
+            'format': '{asctime} {levelname}  {module} {message}',
             'datetime': '%Y.%m.%d H%:M%:S%',
             'style': '{'
-        }
+        },
+
+        'myformatter2': {
+            'format': '{asctime} {levelname} {pathname}  {message}',
+            'datetime': '%Y.%m.%d H%:M%:S%',
+            'style': '{'
+        },
+
+        'myformatter3': {
+            'format': '{asctime} {levelname} {pathname} {exc_info} {message}',
+            'datetime': '%Y.%m.%d H%:M%:S%',
+            'style': '{'
+        },
 
     },
+
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+
+    },
+
     'loggers': {
         'django': {
             'handlers': ['console','handle_info','handle_warnings','handle_erorrs'],
+            'level': 'DEBUG',
+            'propagate': True,
+
         },
         'django.request': {
-            'handlers': ['handle_erorrs','handle_erorrs_mail']
+            'handlers': ['handle_erorrs','handle_erorrs_mail'],
+            'propagate': True
         },
         'django.server': {
-            'handlers': ['handle_erorrs']
+            'handlers': ['handle_erorrs','handle_erorrs_mail'],
+            'propagate': True
         },
-        'django.template': {
-            'handlers': ['handle_erorrs']},
+        'django.db.backends': {
+            'handlers': ['handle_erorrs'],
+            'propagate': True
+        },
 
-        'djnago.sequrity': {
-            'handlers': ['handle_sequrity']
+        'django.template': {
+            'handlers': ['handle_erorrs'],
+            'propagate': True,
+        },
+
+        'django.sequrity': {
+            'handlers': ['handle_sequrity'],
+            'propagate': True,
         }
 
     }
