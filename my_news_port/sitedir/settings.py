@@ -20,6 +20,7 @@ if path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 SITE_URL = 'http://127.0.0.1:8000'
 
 DEFAULT_FROM_EMAIL = "deonissl@yandex.ru"
@@ -67,7 +68,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
+
 ]
 
 ROOT_URLCONF = 'sitedir.urls'
@@ -299,4 +303,6 @@ LOGGING = {
 }
 
 
-
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
